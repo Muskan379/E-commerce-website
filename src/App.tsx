@@ -1794,47 +1794,100 @@ function CheckoutModal({ isOpen, onClose, items, onSuccess }: {
           )}
 
           {step === 'shipping' && (
-            <div className="max-w-lg mx-auto space-y-4">
-              <h3 className="font-semibold text-[var(--text-primary)] mb-2">Shipping Information</h3>
-              <div className="grid grid-cols-2 gap-4">
-                {(['firstName', 'lastName'] as const).map(f => (
-                  <div key={f}>
-                    <label className="block text-sm text-[var(--text-secondary)] mb-1 capitalize">{f === 'firstName' ? 'First Name' : 'Last Name'}</label>
-                    <input value={form[f]} onChange={e => update(f, e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none text-[var(--text-primary)] transition-all"
-                      placeholder={f === 'firstName' ? 'John' : 'Doe'} />
-                  </div>
-                ))}
-              </div>
-              <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-1">Email</label>
-                <input type="email" value={form.email} onChange={e => update('email', e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none text-[var(--text-primary)] transition-all"
-                  placeholder="john@example.com" />
-              </div>
-              <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-1">Address</label>
-                <input value={form.address} onChange={e => update('address', e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none text-[var(--text-primary)] transition-all"
-                  placeholder="123 Main Street" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-[var(--text-secondary)] mb-1">City</label>
-                  <input value={form.city} onChange={e => update('city', e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none text-[var(--text-primary)] transition-all"
-                    placeholder="New York" />
-                </div>
-                <div>
-                  <label className="block text-sm text-[var(--text-secondary)] mb-1">ZIP Code</label>
-                  <input value={form.zip} onChange={e => update('zip', e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none text-[var(--text-primary)] transition-all"
-                    placeholder="10001" />
-                </div>
-              </div>
-            </div>
-          )}
+  <div className="max-w-lg mx-auto space-y-4">
+    <h3 className="font-semibold text-[var(--text-primary)] mb-2">
+      Shipping Information
+    </h3>
 
+    <div className="grid grid-cols-2 gap-4">
+      {(['firstName', 'lastName'] as const).map(f => (
+        <div key={f}>
+          <label className="block text-sm text-[var(--text-secondary)] mb-1 capitalize">
+            {f === 'firstName' ? 'First Name' : 'Last Name'}
+          </label>
+
+          <input
+            value={form[f]}
+            onChange={e => update(f, e.target.value)}
+            className="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none text-[var(--text-primary)] transition-all"
+            placeholder={f === 'firstName' ? 'John' : 'Doe'}
+          />
+        </div>
+      ))}
+    </div>
+
+    {/* Email Validation */}
+    <div>
+      <label className="block text-sm text-[var(--text-secondary)] mb-1">
+        Email
+      </label>
+
+      <input
+        type="email"
+        value={form.email}
+        onChange={e => update('email', e.target.value)}
+        className={`w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border outline-none text-[var(--text-primary)] transition-all
+          ${
+            form.email &&
+            (!form.email.includes('@') ||
+              !form.email.includes('.com'))
+              ? 'border-red-500 focus:ring-red-500/20'
+              : 'border-[var(--border-color)] focus:border-sky-500 focus:ring-sky-500/20'
+          }`}
+        placeholder="john@example.com"
+      />
+
+      {form.email &&
+        (!form.email.includes('@') ||
+          !form.email.includes('.com')) && (
+          <p className="text-red-500 text-sm mt-1">
+            Please enter a valid email address
+          </p>
+        )}
+    </div>
+
+    <div>
+      <label className="block text-sm text-[var(--text-secondary)] mb-1">
+        Address
+      </label>
+
+      <input
+        value={form.address}
+        onChange={e => update('address', e.target.value)}
+        className="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none text-[var(--text-primary)] transition-all"
+        placeholder="123 Main Street"
+      />
+    </div>
+
+    <div className="grid grid-cols-2 gap-4">
+      <div>
+        <label className="block text-sm text-[var(--text-secondary)] mb-1">
+          City
+        </label>
+
+        <input
+          value={form.city}
+          onChange={e => update('city', e.target.value)}
+          className="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none text-[var(--text-primary)] transition-all"
+          placeholder="New York"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm text-[var(--text-secondary)] mb-1">
+          ZIP Code
+        </label>
+
+        <input
+          value={form.zip}
+          onChange={e => update('zip', e.target.value)}
+          className="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none text-[var(--text-primary)] transition-all"
+          placeholder="10001"
+        />
+      </div>
+    </div>
+  </div>
+)}
           {step === 'payment' && (
             <div className="max-w-lg mx-auto space-y-4">
               <h3 className="font-semibold text-[var(--text-primary)] mb-2">Payment Details</h3>
